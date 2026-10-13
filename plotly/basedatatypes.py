@@ -1608,7 +1608,7 @@ is of type {subplot_type}.""".format(
                 xref = xaxis.replace("axis", "")
             # if exclude_empty_subplots is True, check to see if subplot is
             # empty and return if it is
-            if exclude_empty_subplots and (
+            if self.data and exclude_empty_subplots and (
                 not self._subplot_not_empty(
                     xref, yref, selector=bool(exclude_empty_subplots)
                 )

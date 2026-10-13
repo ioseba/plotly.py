@@ -473,3 +473,20 @@ def _check_figure_shapes_custom_sized(test_input, expected, fig):
 )
 def test_custom_sized_subplots(test_input, expected, custom_sized_subplots):
     _check_figure_shapes_custom_sized(test_input, expected, custom_sized_subplots)
+
+
+def test_add_span_shape_unpopulated_subplots():
+    # Issue #5136: add_hline and add_vline on unpopulated make_subplots
+    fig = make_subplots(rows=1, cols=2)
+    fig.add_hline(y=0.5)
+    fig.add_vline(x=2.5, row=1, col=1)
+
+    assert len(fig.layout.shapes) == 3  # hline on both subplots + vline on col 1
+
+    # Add traces after shapes are configured
+    fig.add_trace(go.Scatter(x=[1, 2], y=[0, 1]), row=1, col=1)
+    fig.add_trace(go.Scatter(x=[2, 3], y=[1, 2]), row=1, col=2)
+
+    # Verify shapes persist after adding traces
+    assert len(fig.layout.shapes) == 3
+
